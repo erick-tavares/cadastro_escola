@@ -1,14 +1,16 @@
 package br.com.hbsis.ecolahb.boletim;
 
 
+import br.com.hbsis.ecolahb.aluno.Aluno;
 import br.com.hbsis.ecolahb.aluno.AlunoService;
-import br.com.hbsis.ecolahb.materia.Materia;
 import br.com.hbsis.ecolahb.periodo.PeriodoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -77,6 +79,23 @@ public class BoletimService {
         throw new IllegalArgumentException(String.format("Boletim %s não está cadastrada", id));
     }
 
+    public List<Boletim> findBoletimByAluno (Aluno aluno){
+        List<Boletim> boletimList = this.iBoletimRepository.findByAlunoId(aluno);
+
+        return boletimList;
+    }
+
+    public List<BoletimDTO> boletimDoAluno (Long id){
+        Aluno alunoExistente = alunoService.findByAlunoId(id);
+
+        List<BoletimDTO> boletimDTOList = new ArrayList<>();
+        for (Boletim boletim : iBoletimRepository.findByAlunoId(alunoExistente)){
+            boletimDTOList.add(BoletimDTO.of(boletim));
+        }
+        return boletimDTOList;
+
+
+    }
 
     public BoletimDTO update(BoletimDTO boletimDTO, Long id) {
         Optional<Boletim> boletimExistenteOptional = this.iBoletimRepository.findById(id);

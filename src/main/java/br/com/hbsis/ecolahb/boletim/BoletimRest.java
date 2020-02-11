@@ -1,11 +1,13 @@
 package br.com.hbsis.ecolahb.boletim;
 
+import br.com.hbsis.ecolahb.aluno.Aluno;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/boletins")
@@ -33,6 +35,14 @@ public class BoletimRest {
         LOGGER.info("Recebendo find by ID... id: [{}]", id);
 
         return this.boletimService.findById(id);
+    }
+
+    @GetMapping("/aluno/{alunoId}")
+    public List<BoletimDTO> findByAluno(@PathVariable("alunoId") Long id) {
+
+        LOGGER.info("Recebendo find by ID... id: [{}]", id);
+
+        return this.boletimService.boletimDoAluno(id);
     }
 
     @PutMapping("/{id}")

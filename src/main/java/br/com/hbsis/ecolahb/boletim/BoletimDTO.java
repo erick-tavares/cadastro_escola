@@ -1,24 +1,35 @@
 package br.com.hbsis.ecolahb.boletim;
 
 
+import br.com.hbsis.ecolahb.nota.NotaDTO;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class BoletimDTO {
 
     private Long id;
     private Long alunoId;
     private Long periodoId;
+    private List<NotaDTO> notaDTOList;
 
 
-    public BoletimDTO(Long id, Long alunoId, Long periodoId) {
+    public BoletimDTO(Long id, Long alunoId, Long periodoId, List<NotaDTO> notaDTOList) {
         this.id = id;
         this.alunoId = alunoId;
         this.periodoId = periodoId;
+        this.notaDTOList = notaDTOList;
     }
 
     public static BoletimDTO of(Boletim boletim) {
+        List<NotaDTO> notaDTOList = new ArrayList<>();
+
+        boletim.getNotaList().forEach(nota -> notaDTOList.add(NotaDTO.of(nota)));
         return new BoletimDTO(
                 boletim.getId(),
                 boletim.getAlunoId().getId(),
-                boletim.getPeriodoId().getId()
+                boletim.getPeriodoId().getId(),
+                notaDTOList
         );
     }
 
@@ -53,5 +64,13 @@ public class BoletimDTO {
 
     public void setPeriodoId(Long periodoId) {
         this.periodoId = periodoId;
+    }
+
+    public List<NotaDTO> getNotaDTOList() {
+        return notaDTOList;
+    }
+
+    public void setNotaDTOList(List<NotaDTO> notaDTOList) {
+        this.notaDTOList = notaDTOList;
     }
 }
