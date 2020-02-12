@@ -8,20 +8,22 @@ public class PeriodoDTO {
     private Long id;
     private LocalDate dtInicio;
     private LocalDate dtFim;
+    private String descricao;
 
 
-    public PeriodoDTO(Long id, LocalDate dtInicio, LocalDate dtFim) {
+    public PeriodoDTO(Long id, LocalDate dtInicio, LocalDate dtFim, String descricao) {
         this.id = id;
         this.dtInicio = dtInicio;
         this.dtFim = dtFim;
+        this.descricao = descricao;
     }
 
     public static PeriodoDTO of(Periodo periodo) {
         return new PeriodoDTO(
                 periodo.getId(),
                 periodo.getDtInicio(),
-                periodo.getDtFim()
-        );
+                periodo.getDtFim(),
+                periodo.getDescricao());
     }
 
     @Override
@@ -30,7 +32,16 @@ public class PeriodoDTO {
                 "id=" + id +
                 ", dtInicio=" + dtInicio +
                 ", dtFim=" + dtFim +
+                ", descricao='" + descricao + '\'' +
                 '}';
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public Long getId() {

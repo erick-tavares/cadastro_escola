@@ -29,6 +29,7 @@ public class PeriodoService {
         Periodo periodo = new Periodo();
         periodo.setDtInicio(periodoDTO.getDtInicio());
         periodo.setDtFim(periodoDTO.getDtFim());
+        periodo.setDescricao(periodoDTO.getDescricao());
 
         periodo = this.iPeriodoRepository.save(periodo);
 
@@ -48,6 +49,9 @@ public class PeriodoService {
 
         if (StringUtils.isEmpty(periodoDTO.getDtFim())) {
             throw new IllegalArgumentException("DtFim não deve ser nula");
+        }
+        if (StringUtils.isEmpty(periodoDTO.getDescricao())) {
+            throw new IllegalArgumentException("Descricao não deve ser nula");
         }
     }
 
@@ -82,6 +86,7 @@ public class PeriodoService {
 
             periodoExistente.setDtInicio(periodoDTO.getDtInicio());
             periodoExistente.setDtFim(periodoDTO.getDtFim());
+            periodoExistente.setDescricao(periodoDTO.getDescricao());
 
             periodoExistente = this.iPeriodoRepository.save(periodoExistente);
 

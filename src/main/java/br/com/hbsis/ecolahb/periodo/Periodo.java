@@ -16,6 +16,8 @@ class Periodo {
     private LocalDate dtInicio;
     @Column(name = "dt_fim",  nullable = false)
     private LocalDate dtFim;
+    @Column (name = "descricao", nullable = false)
+    private String descricao;
 
 
     public Periodo() {
@@ -27,7 +29,16 @@ class Periodo {
                 "id=" + id +
                 ", dtInicio=" + dtInicio +
                 ", dtFim=" + dtFim +
+                ", descricao='" + descricao + '\'' +
                 '}';
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public Long getId() {
