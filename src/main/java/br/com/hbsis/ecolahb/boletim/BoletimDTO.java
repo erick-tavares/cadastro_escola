@@ -39,6 +39,7 @@ public class BoletimDTO {
                 "id=" + id +
                 ", alunoId=" + alunoId +
                 ", periodoId=" + periodoId +
+                ", notaDTOList=" + notaDTOList +
                 '}';
     }
 
