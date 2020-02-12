@@ -1,12 +1,14 @@
 package br.com.hbsis.ecolahb.boletim;
 
 import br.com.hbsis.ecolahb.aluno.Aluno;
+import net.sf.jasperreports.engine.JRException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 @RestController
@@ -20,6 +22,8 @@ public class BoletimRest {
     public BoletimRest(BoletimService boletimService) {
         this.boletimService = boletimService;
     }
+    @Autowired
+    public ReportService reportService;
 
     @PostMapping
     public BoletimDTO save(@Valid @RequestBody BoletimDTO boletimDTO) {
@@ -35,6 +39,11 @@ public class BoletimRest {
         LOGGER.info("Recebendo find by ID... id: [{}]", id);
 
         return this.boletimService.findById(id);
+    }
+
+    @GetMapping("/report/{format}")
+    public String generateReport(@PathVariable String format) throws FileNotFoundException, JRException {
+        return reportService.exportReport(format);
     }
 
     @GetMapping("/aluno/{alunoId}")
