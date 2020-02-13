@@ -36,7 +36,6 @@ class Boletim {
                 "id=" + id +
                 ", periodoId=" + periodoId +
                 ", alunoId=" + alunoId +
-                ", notaList=" + notaList +
                 '}';
     }
 

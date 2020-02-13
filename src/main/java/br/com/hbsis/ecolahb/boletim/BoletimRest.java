@@ -41,9 +41,9 @@ public class BoletimRest {
         return this.boletimService.findById(id);
     }
 
-    @GetMapping("/report/{format}")
-    public String generateReport(@PathVariable String format) throws FileNotFoundException, JRException {
-        return reportService.exportReport(format);
+    @GetMapping("/report/{boletim}/{materia}/{format}")
+    public String generateReport(@PathVariable String format, Long boletim, Long materia) throws FileNotFoundException, JRException {
+        return reportService.exportReport(format, boletim, materia);
     }
 
     @GetMapping("/aluno/{alunoId}")

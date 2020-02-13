@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -74,6 +75,10 @@ public class NotaService {
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
 
+    public List<Nota> findAll() {
+       return this.iNotaRepository.findAll();
+
+    }
 
     public NotaDTO update(NotaDTO notaDTO, Long id) {
         Optional<Nota> notaExistenteOptional = this.iNotaRepository.findById(id);
