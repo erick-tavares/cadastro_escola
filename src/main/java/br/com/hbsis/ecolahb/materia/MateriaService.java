@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -49,6 +50,9 @@ public class MateriaService {
 
     }
 
+    public List<Materia> findAll () {
+        return this.iMateriaRepository.findAll();
+    }
 
     public MateriaDTO findById(Long id) {
         Optional<Materia> materiaOptional = this.iMateriaRepository.findById(id);

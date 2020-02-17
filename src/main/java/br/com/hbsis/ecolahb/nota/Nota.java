@@ -1,5 +1,6 @@
 package br.com.hbsis.ecolahb.nota;
 
+import br.com.hbsis.ecolahb.aluno.Aluno;
 import br.com.hbsis.ecolahb.boletim.Boletim;
 import br.com.hbsis.ecolahb.materia.Materia;
 
@@ -20,10 +21,21 @@ class Nota {
     @JoinColumn(name = "materia_id", referencedColumnName = "id")
     private Materia materiaId;
     @ManyToOne
+    @JoinColumn(name = "aluno_id", referencedColumnName = "id")
+    private Aluno alunoId;
+    @ManyToOne
     @JoinColumn(name = "boletim_id", referencedColumnName = "id")
     private Boletim boletimId;
 
     public Nota() {
+    }
+
+    public Boletim getBoletimId() {
+        return boletimId;
+    }
+
+    public void setBoletimId(Boletim boletimId) {
+        this.boletimId = boletimId;
     }
 
     @Override
@@ -32,6 +44,7 @@ class Nota {
                 "id=" + id +
                 ", nota=" + nota +
                 ", materiaId=" + materiaId +
+                ", alunoId=" + alunoId +
                 ", boletimId=" + boletimId +
                 '}';
     }
@@ -60,11 +73,11 @@ class Nota {
         this.materiaId = materiaId;
     }
 
-    public Boletim getBoletimId() {
-        return boletimId;
+    public Aluno getAlunoId() {
+        return alunoId;
     }
 
-    public void setBoletimId(Boletim boletimId) {
-        this.boletimId = boletimId;
+    public void setAlunoId(Aluno alunoId) {
+        this.alunoId = alunoId;
     }
 }

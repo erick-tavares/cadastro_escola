@@ -1,6 +1,5 @@
 package br.com.hbsis.ecolahb.boletim;
 
-import br.com.hbsis.ecolahb.aluno.Aluno;
 import net.sf.jasperreports.engine.JRException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,9 +40,9 @@ public class BoletimRest {
         return this.boletimService.findById(id);
     }
 
-    @GetMapping("/report/{boletim}/{materia}/{format}")
-    public String generateReport(@PathVariable String format, Long boletim, Long materia) throws FileNotFoundException, JRException {
-        return reportService.exportReport(format, boletim, materia);
+    @GetMapping("/report/{boletim}/{format}")
+    public String generateReport(@PathVariable ("boletim") Long boletim, @PathVariable("format") String format) throws FileNotFoundException, JRException {
+        return reportService.exportReport(boletim, format);
     }
 
     @GetMapping("/aluno/{alunoId}")
@@ -52,6 +51,13 @@ public class BoletimRest {
         LOGGER.info("Recebendo find by ID... id: [{}]", id);
 
         return this.boletimService.boletimDoAluno(id);
+    }
+    @GetMapping("/boletim/{boletimId}")
+    public List<BoletimModel> findBoletim(@PathVariable("boletimId") Long id) {
+
+        LOGGER.info("Recebendo find by ID... id: [{}]", id);
+
+        return this.boletimService.preencherBoletim(id);
     }
 
     @PutMapping("/{id}")

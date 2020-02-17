@@ -22,6 +22,7 @@ private String media;
         this.media = media;
     }
 
+
     @Override
     public String toString() {
         return "BoletimModel{" +

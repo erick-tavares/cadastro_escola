@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -53,6 +54,10 @@ public class PeriodoService {
         if (StringUtils.isEmpty(periodoDTO.getDescricao())) {
             throw new IllegalArgumentException("Descricao não deve ser nula");
         }
+    }
+
+    public List<Periodo> findAll(){
+        return iPeriodoRepository.findAll();
     }
 
     public PeriodoDTO findById(Long id) {

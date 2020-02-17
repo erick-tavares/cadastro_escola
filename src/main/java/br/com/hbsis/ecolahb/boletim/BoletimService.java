@@ -7,6 +7,7 @@ import br.com.hbsis.ecolahb.materia.Materia;
 import br.com.hbsis.ecolahb.materia.MateriaService;
 import br.com.hbsis.ecolahb.nota.Nota;
 import br.com.hbsis.ecolahb.nota.NotaDTO;
+import br.com.hbsis.ecolahb.nota.NotaService;
 import br.com.hbsis.ecolahb.periodo.PeriodoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,12 +27,14 @@ public class BoletimService {
     private final AlunoService alunoService;
     private final PeriodoService periodoService;
     private final MateriaService materiaService;
+    public final NotaService notaService;
 
-    public BoletimService(IBoletimRepository iBoletimRepository, AlunoService alunoService, PeriodoService periodoService, MateriaService materiaService) {
+    public BoletimService(IBoletimRepository iBoletimRepository, AlunoService alunoService, PeriodoService periodoService, MateriaService materiaService, NotaService notaService) {
         this.iBoletimRepository = iBoletimRepository;
         this.alunoService = alunoService;
         this.periodoService = periodoService;
         this.materiaService = materiaService;
+        this.notaService = notaService;
     }
 
     public BoletimDTO save(BoletimDTO boletimDTO) {
@@ -44,7 +47,7 @@ public class BoletimService {
         Boletim boletim = new Boletim();
         boletim.setAlunoId(alunoService.findByAlunoId(boletimDTO.getAlunoId()));
         boletim.setPeriodoId(periodoService.findByPeriodoId(boletimDTO.getPeriodoId()));
-        boletim.setNotaList(preencherNotas(boletimDTO.getNotaDTOList(), boletim));
+        boletim.setNotaList(preencherNotas(boletimDTO.getNotaDTOList()));
 
         boletim = this.iBoletimRepository.save(boletim);
 
@@ -92,6 +95,7 @@ public class BoletimService {
         return boletimList;
     }
 
+
     public List<BoletimDTO> boletimDoAluno(Long id) {
         Aluno alunoExistente = alunoService.findByAlunoId(id);
 
@@ -102,51 +106,60 @@ public class BoletimService {
         return boletimDTOList;
     }
 
-    public List<Nota> preencherNotas(List<NotaDTO> notaDtoEntrada, Boletim boletim) {
+    public List<Nota> preencherNotas(List<NotaDTO> notaDtoEntrada) {
         List<Nota> notaList = new ArrayList<>();
         for (NotaDTO notaDto : notaDtoEntrada) {
             Nota notaNova = new Nota();
 
             notaNova.setNota(notaDto.getNota());
             notaNova.setMateriaId(materiaService.findByMateriaId(notaDto.getMateriaId()));
-            notaNova.setBoletimId(boletim);
+            notaNova.setAlunoId(alunoService.findByAlunoId(notaDto.getAlunoId()));
 
             notaList.add(notaNova);
         }
         return notaList;
     }
 
-    public List<BoletimModel> preencherBoletim(Long idBoletim, Long idMateria) {
+    public List<BoletimModel> preencherBoletim(Long boletimId) {
         List<BoletimModel> boletimModelList = new ArrayList<>();
-        try {
-            Optional<Materia> materiaExistente = Optional.ofNullable(materiaService.findByMateriaId(idMateria));
-            Optional<Boletim> boletimExistente = Optional.ofNullable(this.findByBoletimId(idBoletim));
+        Boletim boletimExistente = this.findByBoletimId(boletimId);
 
-
-            if (boletimExistente.isPresent() && materiaExistente.isPresent()) {
+        List<Materia> materiaList = materiaService.findAll();
+        for (Materia materia : materiaList) {
+            List<Nota> notaList = notaService.findAllByAlunoId_IdAndPeriodoId_Id(boletimExistente.getAlunoId().getId(), boletimExistente.getPeriodoId().getId());
+            try {
                 BoletimModel boletimModel = new BoletimModel();
 
-                double media = ((this.findByBoletimId(idBoletim).getNotaList().get(0).getNota() +
-                        this.findByBoletimId(idBoletim).getNotaList().get(1).getNota() +
-                        this.findByBoletimId(idBoletim).getNotaList().get(2).getNota() +
-                        this.findByBoletimId(idBoletim).getNotaList().get(3).getNota()) / 4);
+                double[] notas = new double[4];
+                int contador = 0;
+                for (int i = 0; i < notaList.size(); i++) {
+                    if (notaList.get(i).getMateriaId().getId().equals(materia.getId())) {
+                        notas[contador] = notaList.get(i).getNota();
+                        contador++;
+                    }
+                }
+                double nota1 = notas [0];
+                double nota2 = notas [1];
+                double nota3 = notas [2];
+                double nota4 = notas [3];
 
-                boletimModel.setAluno(this.findByBoletimId(idBoletim).getAlunoId().getNome());
-                boletimModel.setMateria(materiaService.findByMateriaId(idMateria).getNome());
-                boletimModel.setPeriodo(this.findByBoletimId(idBoletim).getPeriodoId().getDescricao());
-                boletimModel.setNota1(String.valueOf(this.findByBoletimId(idBoletim).getNotaList().get(0).getNota()));
-                boletimModel.setNota2(String.valueOf(this.findByBoletimId(idBoletim).getNotaList().get(1).getNota()));
-                boletimModel.setNota3(String.valueOf(this.findByBoletimId(idBoletim).getNotaList().get(2).getNota()));
-                boletimModel.setNota4(String.valueOf(this.findByBoletimId(idBoletim).getNotaList().get(3).getNota()));
+                double media = ((nota1 + nota2 + nota3 + nota4) / notas.length);
+
+                boletimModel.setAluno(this.findByBoletimId(boletimId).getAlunoId().getNome());
+                boletimModel.setMateria(materiaService.findByMateriaId(materia.getId()).getNome());
+
+                boletimModel.setPeriodo(this.findByBoletimId(boletimId).getPeriodoId().getDescricao());
+                boletimModel.setNota1(String.valueOf(nota1));
+                boletimModel.setNota2(String.valueOf(nota2));
+                boletimModel.setNota3(String.valueOf(nota3));
+                boletimModel.setNota4(String.valueOf(nota4));
 
                 boletimModel.setMedia(String.valueOf(media));
-                System.out.println(boletimModel.toString());
                 boletimModelList.add(boletimModel);
 
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-
-        } catch (Exception ex) {
-            System.out.println(ex);
         }
         return boletimModelList;
     }
@@ -165,7 +178,7 @@ public class BoletimService {
             boletimExistente.setAlunoId(alunoService.findByAlunoId(boletimDTO.getAlunoId()));
             boletimExistente.setPeriodoId(periodoService.findByPeriodoId(boletimDTO.getPeriodoId()));
 
-            boletimExistente.setNotaList(preencherNotas(boletimDTO.getNotaDTOList(), boletimExistente));
+            boletimExistente.setNotaList(preencherNotas(boletimDTO.getNotaDTOList()));
 
             boletimExistente = this.iBoletimRepository.save(boletimExistente);
 

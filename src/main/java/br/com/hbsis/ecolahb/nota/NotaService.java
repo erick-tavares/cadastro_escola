@@ -1,7 +1,7 @@
 package br.com.hbsis.ecolahb.nota;
 
 
-import br.com.hbsis.ecolahb.boletim.BoletimService;
+import br.com.hbsis.ecolahb.aluno.AlunoService;
 import br.com.hbsis.ecolahb.materia.MateriaService;
 
 import org.slf4j.Logger;
@@ -19,12 +19,14 @@ public class NotaService {
 
     private final INotaRepository iNotaRepository;
     private final MateriaService materiaService;
-    private final BoletimService boletimService;
+    private final AlunoService alunoService;
+  //  private final BoletimService boletimService;
 
-    public NotaService(INotaRepository iNotaRepository, MateriaService materiaService, BoletimService boletimService) {
+    public NotaService(INotaRepository iNotaRepository, MateriaService materiaService, AlunoService alunoService) {
         this.iNotaRepository = iNotaRepository;
         this.materiaService = materiaService;
-        this.boletimService = boletimService;
+        this.alunoService = alunoService;
+     //   this.boletimService = boletimService;
     }
 
     public NotaDTO save(NotaDTO notaDTO) {
@@ -37,7 +39,8 @@ public class NotaService {
         Nota nota = new Nota();
         nota.setNota(notaDTO.getNota());
         nota.setMateriaId(materiaService.findByMateriaId(notaDTO.getMateriaId()));
-        nota.setBoletimId(boletimService.findByBoletimId(notaDTO.getBoletimId()));
+        nota.setAlunoId(alunoService.findByAlunoId(notaDTO.getAlunoId()));
+       // nota.setBoletimId(boletimService.findByBoletimId(notaDTO.getBoletimId()));
 
         nota = this.iNotaRepository.save(nota);
 
@@ -59,6 +62,10 @@ public class NotaService {
             throw new IllegalArgumentException("MateriaId não deve ser nulo");
         }
 
+        if (StringUtils.isEmpty(notaDTO.getAlunoId())) {
+            throw new IllegalArgumentException("AlunoId não deve ser nulo");
+        }
+
         if (StringUtils.isEmpty(notaDTO.getBoletimId())) {
             throw new IllegalArgumentException("BoletimId não deve ser nulo");
         }
@@ -75,8 +82,19 @@ public class NotaService {
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
 
+
+    public List<Nota> findAllByAlunoId (Long alunoId){
+        return this.iNotaRepository.findAllByAlunoId_Id(alunoId);
+
+    }
+    public List<Nota> findAllByAlunoId_IdAndPeriodoId_Id(Long alunoId, Long periodoId) {
+
+        return this.iNotaRepository.findAllByBoletimId_AlunoId_IdAndBoletimId_PeriodoId_Id(alunoId,periodoId);
+
+    }
+
     public List<Nota> findAll() {
-       return this.iNotaRepository.findAll();
+        return this.iNotaRepository.findAll();
 
     }
 
@@ -92,7 +110,8 @@ public class NotaService {
 
             notaExistente.setNota(notaDTO.getNota());
             notaExistente.setMateriaId(materiaService.findByMateriaId(notaDTO.getMateriaId()));
-            notaExistente.setBoletimId(boletimService.findByBoletimId(notaDTO.getBoletimId()));
+            notaExistente.setAlunoId(alunoService.findByAlunoId(notaDTO.getAlunoId()));
+         //   notaExistente.setBoletimId(boletimService.findByBoletimId(notaDTO.getBoletimId()));
 
             notaExistente = this.iNotaRepository.save(notaExistente);
 

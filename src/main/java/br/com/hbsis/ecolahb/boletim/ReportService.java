@@ -23,9 +23,9 @@ public class ReportService {
         this.boletimService = boletimService;
     }
 
-    public String exportReport (String reportFormat, Long boletim, Long materia) throws FileNotFoundException, JRException {
+    public String exportReport (Long boletim, String reportFormat ) throws FileNotFoundException, JRException {
             String path = "C:\\Users\\erick.tavares\\Desktop\\Report";
-            List<BoletimModel> boletimList = boletimService.preencherBoletim(boletim, materia);
+            List<BoletimModel> boletimList = boletimService.preencherBoletim(boletim);
 
             File file = ResourceUtils.getFile("classpath:boletim.jrxml");
             JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
@@ -43,6 +43,4 @@ public class ReportService {
             }
             return "Report gerado no caminho" + path;
         }
-
-
     }
