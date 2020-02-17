@@ -2,6 +2,7 @@ package br.com.hbsis.ecolahb.nota;
 
 
 import br.com.hbsis.ecolahb.aluno.AlunoService;
+import br.com.hbsis.ecolahb.boletim.BoletimService;
 import br.com.hbsis.ecolahb.materia.MateriaService;
 
 import org.slf4j.Logger;
@@ -20,13 +21,13 @@ public class NotaService {
     private final INotaRepository iNotaRepository;
     private final MateriaService materiaService;
     private final AlunoService alunoService;
-  //  private final BoletimService boletimService;
+    private final BoletimService boletimService;
 
-    public NotaService(INotaRepository iNotaRepository, MateriaService materiaService, AlunoService alunoService) {
+    public NotaService(INotaRepository iNotaRepository, MateriaService materiaService, AlunoService alunoService,BoletimService boletimService) {
         this.iNotaRepository = iNotaRepository;
         this.materiaService = materiaService;
         this.alunoService = alunoService;
-     //   this.boletimService = boletimService;
+        this.boletimService = boletimService;
     }
 
     public NotaDTO save(NotaDTO notaDTO) {
@@ -40,7 +41,7 @@ public class NotaService {
         nota.setNota(notaDTO.getNota());
         nota.setMateriaId(materiaService.findByMateriaId(notaDTO.getMateriaId()));
         nota.setAlunoId(alunoService.findByAlunoId(notaDTO.getAlunoId()));
-       // nota.setBoletimId(boletimService.findByBoletimId(notaDTO.getBoletimId()));
+        nota.setBoletimId(boletimService.findByBoletimId(notaDTO.getBoletimId()));
 
         nota = this.iNotaRepository.save(nota);
 
@@ -93,10 +94,6 @@ public class NotaService {
 
     }
 
-    public List<Nota> findAll() {
-        return this.iNotaRepository.findAll();
-
-    }
 
     public NotaDTO update(NotaDTO notaDTO, Long id) {
         Optional<Nota> notaExistenteOptional = this.iNotaRepository.findById(id);
@@ -111,7 +108,7 @@ public class NotaService {
             notaExistente.setNota(notaDTO.getNota());
             notaExistente.setMateriaId(materiaService.findByMateriaId(notaDTO.getMateriaId()));
             notaExistente.setAlunoId(alunoService.findByAlunoId(notaDTO.getAlunoId()));
-         //   notaExistente.setBoletimId(boletimService.findByBoletimId(notaDTO.getBoletimId()));
+            notaExistente.setBoletimId(boletimService.findByBoletimId(notaDTO.getBoletimId()));
 
             notaExistente = this.iNotaRepository.save(notaExistente);
 

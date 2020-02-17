@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -56,9 +55,6 @@ public class PeriodoService {
         }
     }
 
-    public List<Periodo> findAll(){
-        return iPeriodoRepository.findAll();
-    }
 
     public PeriodoDTO findById(Long id) {
         Optional<Periodo> periodoOptional = this.iPeriodoRepository.findById(id);

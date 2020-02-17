@@ -3,11 +3,9 @@ package br.com.hbsis.ecolahb.boletim;
 
 import br.com.hbsis.ecolahb.aluno.Aluno;
 import br.com.hbsis.ecolahb.aluno.AlunoService;
-import br.com.hbsis.ecolahb.materia.Materia;
 import br.com.hbsis.ecolahb.materia.MateriaService;
 import br.com.hbsis.ecolahb.nota.Nota;
 import br.com.hbsis.ecolahb.nota.NotaDTO;
-import br.com.hbsis.ecolahb.nota.NotaService;
 import br.com.hbsis.ecolahb.periodo.PeriodoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,14 +25,13 @@ public class BoletimService {
     private final AlunoService alunoService;
     private final PeriodoService periodoService;
     private final MateriaService materiaService;
-    public final NotaService notaService;
 
-    public BoletimService(IBoletimRepository iBoletimRepository, AlunoService alunoService, PeriodoService periodoService, MateriaService materiaService, NotaService notaService) {
+
+    public BoletimService(IBoletimRepository iBoletimRepository, AlunoService alunoService, PeriodoService periodoService, MateriaService materiaService) {
         this.iBoletimRepository = iBoletimRepository;
         this.alunoService = alunoService;
         this.periodoService = periodoService;
         this.materiaService = materiaService;
-        this.notaService = notaService;
     }
 
     public BoletimDTO save(BoletimDTO boletimDTO) {
@@ -89,7 +86,7 @@ public class BoletimService {
         throw new IllegalArgumentException(String.format("Boletim %s não está cadastrada", id));
     }
 
-    public List<Boletim> findBoletimByAluno(Aluno aluno) {
+    public List<Boletim> findByAluno(Aluno aluno) {
         List<Boletim> boletimList = this.iBoletimRepository.findByAlunoId(aluno);
 
         return boletimList;
@@ -100,7 +97,7 @@ public class BoletimService {
         Aluno alunoExistente = alunoService.findByAlunoId(id);
 
         List<BoletimDTO> boletimDTOList = new ArrayList<>();
-        for (Boletim boletim : iBoletimRepository.findByAlunoId(alunoExistente)) {
+        for (Boletim boletim : this.findByAluno(alunoExistente)) {
             boletimDTOList.add(BoletimDTO.of(boletim));
         }
         return boletimDTOList;
@@ -118,50 +115,6 @@ public class BoletimService {
             notaList.add(notaNova);
         }
         return notaList;
-    }
-
-    public List<BoletimModel> preencherBoletim(Long boletimId) {
-        List<BoletimModel> boletimModelList = new ArrayList<>();
-        Boletim boletimExistente = this.findByBoletimId(boletimId);
-
-        List<Materia> materiaList = materiaService.findAll();
-        for (Materia materia : materiaList) {
-            List<Nota> notaList = notaService.findAllByAlunoId_IdAndPeriodoId_Id(boletimExistente.getAlunoId().getId(), boletimExistente.getPeriodoId().getId());
-            try {
-                BoletimModel boletimModel = new BoletimModel();
-
-                double[] notas = new double[4];
-                int contador = 0;
-                for (int i = 0; i < notaList.size(); i++) {
-                    if (notaList.get(i).getMateriaId().getId().equals(materia.getId())) {
-                        notas[contador] = notaList.get(i).getNota();
-                        contador++;
-                    }
-                }
-                double nota1 = notas [0];
-                double nota2 = notas [1];
-                double nota3 = notas [2];
-                double nota4 = notas [3];
-
-                double media = ((nota1 + nota2 + nota3 + nota4) / notas.length);
-
-                boletimModel.setAluno(this.findByBoletimId(boletimId).getAlunoId().getNome());
-                boletimModel.setMateria(materiaService.findByMateriaId(materia.getId()).getNome());
-
-                boletimModel.setPeriodo(this.findByBoletimId(boletimId).getPeriodoId().getDescricao());
-                boletimModel.setNota1(String.valueOf(nota1));
-                boletimModel.setNota2(String.valueOf(nota2));
-                boletimModel.setNota3(String.valueOf(nota3));
-                boletimModel.setNota4(String.valueOf(nota4));
-
-                boletimModel.setMedia(String.valueOf(media));
-                boletimModelList.add(boletimModel);
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-        return boletimModelList;
     }
 
 

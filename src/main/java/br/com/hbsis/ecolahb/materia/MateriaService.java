@@ -1,8 +1,6 @@
 package br.com.hbsis.ecolahb.materia;
 
-import br.com.hbsis.ecolahb.aluno.Aluno;
-import br.com.hbsis.ecolahb.aluno.AlunoDTO;
-import br.com.hbsis.ecolahb.aluno.IAlunoRepository;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

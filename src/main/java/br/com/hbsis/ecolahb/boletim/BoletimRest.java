@@ -52,13 +52,7 @@ public class BoletimRest {
 
         return this.boletimService.boletimDoAluno(id);
     }
-    @GetMapping("/boletim/{boletimId}")
-    public List<BoletimModel> findBoletim(@PathVariable("boletimId") Long id) {
 
-        LOGGER.info("Recebendo find by ID... id: [{}]", id);
-
-        return this.boletimService.preencherBoletim(id);
-    }
 
     @PutMapping("/{id}")
     public BoletimDTO udpate(@PathVariable("id") Long id, @RequestBody BoletimDTO boletimDTO) {
