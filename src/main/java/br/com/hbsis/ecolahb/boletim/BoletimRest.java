@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/boletins")
 public class BoletimRest {
     private static final Logger LOGGER = LoggerFactory.getLogger(BoletimRest.class);
@@ -38,6 +39,14 @@ public class BoletimRest {
         LOGGER.info("Recebendo find by ID... id: [{}]", id);
 
         return this.boletimService.findById(id);
+    }
+
+    @GetMapping("/")
+    public List<BoletimDTO> findAllDTO() {
+
+        LOGGER.info("Recebendo find all");
+
+        return this.boletimService.findAllDTO();
     }
 
     @GetMapping("/report/{boletim}/{format}")

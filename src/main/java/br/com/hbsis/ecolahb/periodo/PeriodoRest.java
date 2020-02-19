@@ -1,6 +1,6 @@
 package br.com.hbsis.ecolahb.periodo;
 
-import br.com.hbsis.ecolahb.nota.NotaDTO;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/periodos")
 public class PeriodoRest {
     private static final Logger LOGGER = LoggerFactory.getLogger(PeriodoRest.class);

@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,11 +84,24 @@ public class NotaService {
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
 
-
-    public List<Nota> findAllByAlunoId (Long alunoId){
-        return this.iNotaRepository.findAllByAlunoId_Id(alunoId);
-
+    public List<NotaDTO> findAll(){
+        List<Nota> notas = iNotaRepository.findAll();
+        List<NotaDTO> notasDto = new ArrayList<>();
+        for (Nota nota : notas){
+            notasDto.add(NotaDTO.of(nota));
+        }
+        return notasDto;
     }
+
+public List<NotaDTO> findAllByAlunoId_Id(Long alunoId){
+        List<Nota> notas = iNotaRepository.findAllByAlunoId_Id(alunoId);
+        List<NotaDTO> notasDto = new ArrayList<>();
+        for (Nota nota : notas){
+            notasDto.add(NotaDTO.of(nota));
+        }
+        return notasDto;
+}
+
     public List<Nota> findAllByAlunoId_IdAndPeriodoId_Id(Long alunoId, Long periodoId) {
 
         return this.iNotaRepository.findAllByBoletimId_AlunoId_IdAndBoletimId_PeriodoId_Id(alunoId,periodoId);

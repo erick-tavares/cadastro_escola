@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/notas")
 public class NotaRest {
     private static final Logger LOGGER = LoggerFactory.getLogger(NotaRest.class);
@@ -33,6 +35,22 @@ public class NotaRest {
         LOGGER.info("Recebendo find by ID... id: [{}]", id);
 
         return this.notaService.findById(id);
+    }
+
+    @GetMapping("/")
+    public List<NotaDTO> findAll() {
+
+        LOGGER.info("Recebendo find all");
+
+        return this.notaService.findAll();
+    }
+
+    @GetMapping("/aluno/{id}")
+    public List<NotaDTO> findByAluno(@PathVariable("id") Long id) {
+
+        LOGGER.info("Recebendo find by ID... id: [{}]", id);
+
+        return this.notaService.findAllByAlunoId_Id(id);
     }
 
     @PutMapping("/{id}")

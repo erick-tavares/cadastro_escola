@@ -1,11 +1,14 @@
 package br.com.hbsis.ecolahb.materia;
 
 
+import br.com.hbsis.ecolahb.aluno.Aluno;
+import br.com.hbsis.ecolahb.aluno.AlunoDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,6 +54,16 @@ public class MateriaService {
     public List<Materia> findAll () {
         return this.iMateriaRepository.findAll();
     }
+
+    public List<MateriaDTO> findAllDTO (){
+        List<Materia> materias = iMateriaRepository.findAll();
+        List<MateriaDTO>materiaDto = new ArrayList<>();
+        for (Materia materia : materias){
+            materiaDto.add(MateriaDTO.of(materia));
+        }
+        return materiaDto;
+    }
+
 
     public MateriaDTO findById(Long id) {
         Optional<Materia> materiaOptional = this.iMateriaRepository.findById(id);

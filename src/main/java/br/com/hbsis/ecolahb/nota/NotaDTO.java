@@ -17,6 +17,9 @@ public class NotaDTO {
         this.boletimId = boletimId;
     }
 
+    public NotaDTO() {
+    }
+
     public static NotaDTO of(Nota nota) {
         return new NotaDTO(
                 nota.getId(),

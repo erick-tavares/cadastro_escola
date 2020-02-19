@@ -86,6 +86,15 @@ public class BoletimService {
         throw new IllegalArgumentException(String.format("Boletim %s não está cadastrada", id));
     }
 
+    public List<BoletimDTO> findAllDTO(){
+       List<Boletim> boletimList = this.iBoletimRepository.findAll();
+       List<BoletimDTO> boletimDTOList = new ArrayList<>();
+       for(Boletim boletim : boletimList){
+           boletimDTOList.add(BoletimDTO.of(boletim));
+       }
+        return boletimDTOList;
+    }
+
     public List<Boletim> findByAluno(Aluno aluno) {
         List<Boletim> boletimList = this.iBoletimRepository.findByAlunoId(aluno);
 
