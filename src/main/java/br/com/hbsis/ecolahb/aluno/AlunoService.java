@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -64,6 +66,8 @@ public class AlunoService {
         throw new IllegalArgumentException(String.format("Aluno %s não está cadastrado", nome));
     }
 
+
+
     public AlunoDTO findById(Long id) {
         Optional<Aluno> alunoOptional = this.iAlunoRepository.findById(id);
 
@@ -72,6 +76,15 @@ public class AlunoService {
         }
 
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
+    }
+
+    public List<AlunoDTO> findAll (){
+        List<Aluno> alunos = iAlunoRepository.findAll();
+        List<AlunoDTO>alunosDto = new ArrayList<>();
+        for (Aluno aluno : alunos){
+            alunosDto.add(AlunoDTO.of(aluno));
+        }
+        return alunosDto;
     }
 
     public Aluno findByAlunoId (Long id){
@@ -110,4 +123,5 @@ public class AlunoService {
 
         this.iAlunoRepository.deleteById(id);
     }
+
 }

@@ -16,6 +16,9 @@ public class AlunoDTO {
         this.telefone = telefone;
     }
 
+    public AlunoDTO() {
+    }
+
     public static AlunoDTO of(Aluno aluno) {
         return new AlunoDTO(
                 aluno.getId(),

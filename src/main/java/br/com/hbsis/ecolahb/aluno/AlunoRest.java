@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/alunos")
 public class AlunoRest {
     private static final Logger LOGGER = LoggerFactory.getLogger(AlunoRest.class);
@@ -27,12 +29,21 @@ public class AlunoRest {
         return this.alunoService.save(alunoDTO);
     }
 
+
     @GetMapping("/{id}")
     public AlunoDTO find(@PathVariable("id") Long id) {
 
         LOGGER.info("Recebendo find by ID... id: [{}]", id);
 
         return this.alunoService.findById(id);
+    }
+
+    @GetMapping("/")
+    public List<AlunoDTO> findAll() {
+
+        LOGGER.info("Recebendo find all");
+
+        return this.alunoService.findAll();
     }
 
     @PutMapping("/{id}")
