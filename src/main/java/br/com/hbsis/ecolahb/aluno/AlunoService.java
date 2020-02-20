@@ -78,13 +78,8 @@ public class AlunoService {
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
 
-    public List<AlunoDTO> findAll (){
-        List<Aluno> alunos = iAlunoRepository.findAll();
-        List<AlunoDTO>alunosDto = new ArrayList<>();
-        for (Aluno aluno : alunos){
-            alunosDto.add(AlunoDTO.of(aluno));
-        }
-        return alunosDto;
+    public List<Aluno> findAll (){
+        return iAlunoRepository.findAll();
     }
 
     public Aluno findByAlunoId (Long id){

@@ -86,12 +86,17 @@ public class BoletimService {
         throw new IllegalArgumentException(String.format("Boletim %s não está cadastrada", id));
     }
 
-    public List<BoletimDTO> findAllDTO(){
-       List<Boletim> boletimList = this.iBoletimRepository.findAll();
-       List<BoletimDTO> boletimDTOList = new ArrayList<>();
-       for(Boletim boletim : boletimList){
-           boletimDTOList.add(BoletimDTO.of(boletim));
-       }
+//    public List<Boletim> findAll(){
+//        return iBoletimRepository.findAll();
+//    }
+
+    public List<BoletimDTO> findAll() {
+        List<Boletim> boletimList = iBoletimRepository.findAll();
+        List<BoletimDTO> boletimDTOList = new ArrayList<>();
+        for (Boletim boletim : boletimList) {
+            boletimDTOList.add(BoletimDTO.of(boletim));
+
+        }
         return boletimDTOList;
     }
 
@@ -114,14 +119,18 @@ public class BoletimService {
 
     public List<Nota> preencherNotas(List<NotaDTO> notaDtoEntrada) {
         List<Nota> notaList = new ArrayList<>();
-        for (NotaDTO notaDto : notaDtoEntrada) {
-            Nota notaNova = new Nota();
+        if (notaDtoEntrada != null) {
+            if (notaDtoEntrada != null) {
+                for (NotaDTO notaDto : notaDtoEntrada) {
+                    Nota notaNova = new Nota();
 
-            notaNova.setNota(notaDto.getNota());
-            notaNova.setMateriaId(materiaService.findByMateriaId(notaDto.getMateriaId()));
-            notaNova.setAlunoId(alunoService.findByAlunoId(notaDto.getAlunoId()));
+                    notaNova.setNota(notaDto.getNota());
+                    notaNova.setMateriaId(materiaService.findByMateriaId(notaDto.getMateriaId()));
+                    notaNova.setAlunoId(alunoService.findByAlunoId(notaDto.getAlunoId()));
 
-            notaList.add(notaNova);
+                    notaList.add(notaNova);
+                }
+            }
         }
         return notaList;
     }
@@ -139,8 +148,6 @@ public class BoletimService {
 
             boletimExistente.setAlunoId(alunoService.findByAlunoId(boletimDTO.getAlunoId()));
             boletimExistente.setPeriodoId(periodoService.findByPeriodoId(boletimDTO.getPeriodoId()));
-
-            boletimExistente.setNotaList(preencherNotas(boletimDTO.getNotaDTOList()));
 
             boletimExistente = this.iBoletimRepository.save(boletimExistente);
 

@@ -24,7 +24,7 @@ public class NotaService {
     private final AlunoService alunoService;
     private final BoletimService boletimService;
 
-    public NotaService(INotaRepository iNotaRepository, MateriaService materiaService, AlunoService alunoService,BoletimService boletimService) {
+    public NotaService(INotaRepository iNotaRepository, MateriaService materiaService, AlunoService alunoService, BoletimService boletimService) {
         this.iNotaRepository = iNotaRepository;
         this.materiaService = materiaService;
         this.alunoService = alunoService;
@@ -84,27 +84,32 @@ public class NotaService {
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
 
+//    public List<Nota> findAll() {
+//        return iNotaRepository.findAll();
+//    }
     public List<NotaDTO> findAll(){
-        List<Nota> notas = iNotaRepository.findAll();
+        List<Nota> notaList = iNotaRepository.findAll();
+        List<NotaDTO> notaDTOList = new ArrayList<>();
+        for (Nota nota : notaList){
+            notaDTOList.add(NotaDTO.of(nota));
+
+        }
+        return notaDTOList;
+    }
+
+
+    public List<NotaDTO> findAllByAlunoId_Id(Long alunoId) {
+        List<Nota> notas = iNotaRepository.findAllByAlunoId_Id(alunoId);
         List<NotaDTO> notasDto = new ArrayList<>();
-        for (Nota nota : notas){
+        for (Nota nota : notas) {
             notasDto.add(NotaDTO.of(nota));
         }
         return notasDto;
     }
 
-public List<NotaDTO> findAllByAlunoId_Id(Long alunoId){
-        List<Nota> notas = iNotaRepository.findAllByAlunoId_Id(alunoId);
-        List<NotaDTO> notasDto = new ArrayList<>();
-        for (Nota nota : notas){
-            notasDto.add(NotaDTO.of(nota));
-        }
-        return notasDto;
-}
-
     public List<Nota> findAllByAlunoId_IdAndPeriodoId_Id(Long alunoId, Long periodoId) {
 
-        return this.iNotaRepository.findAllByBoletimId_AlunoId_IdAndBoletimId_PeriodoId_Id(alunoId,periodoId);
+        return this.iNotaRepository.findAllByBoletimId_AlunoId_IdAndBoletimId_PeriodoId_Id(alunoId, periodoId);
 
     }
 

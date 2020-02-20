@@ -21,10 +21,20 @@ public class BoletimDTO {
         this.notaDTOList = notaDTOList;
     }
 
+    public BoletimDTO(Long id, Long alunoId, Long periodoId) {
+        this.id = id;
+        this.alunoId = alunoId;
+        this.periodoId = periodoId;
+    }
+
+    public BoletimDTO() {
+    }
+
     public static BoletimDTO of(Boletim boletim) {
         List<NotaDTO> notaDTOList = new ArrayList<>();
-
-        boletim.getNotaList().forEach(nota -> notaDTOList.add(NotaDTO.of(nota)));
+if(boletim.getNotaList() != null) {
+    boletim.getNotaList().forEach(nota -> notaDTOList.add(NotaDTO.of(nota)));
+}
         return new BoletimDTO(
                 boletim.getId(),
                 boletim.getAlunoId().getId(),

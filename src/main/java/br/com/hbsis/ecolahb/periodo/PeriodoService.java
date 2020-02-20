@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -55,6 +57,18 @@ public class PeriodoService {
         }
     }
 
+//    public List<Periodo> findAll() {
+//        return iPeriodoRepository.findAll();
+//    }
+
+    public List<PeriodoDTO> findAll(){
+        List<Periodo> periodoList = iPeriodoRepository.findAll();
+        List<PeriodoDTO> periodoDTOList = new ArrayList<>();
+        for(Periodo periodo : periodoList){
+            periodoDTOList.add(PeriodoDTO.of(periodo));
+        }
+        return periodoDTOList;
+    }
 
     public PeriodoDTO findById(Long id) {
         Optional<Periodo> periodoOptional = this.iPeriodoRepository.findById(id);
@@ -66,10 +80,10 @@ public class PeriodoService {
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
 
-    public Periodo findByPeriodoId (Long id){
+    public Periodo findByPeriodoId(Long id) {
         Optional<Periodo> periodoOptional = this.iPeriodoRepository.findById(id);
 
-        if(periodoOptional.isPresent()){
+        if (periodoOptional.isPresent()) {
             return periodoOptional.get();
         }
         throw new IllegalArgumentException(String.format("Período %s não está cadastrado", id));

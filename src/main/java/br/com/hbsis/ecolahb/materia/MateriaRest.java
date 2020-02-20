@@ -10,7 +10,6 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/materias")
 public class MateriaRest {
     private static final Logger LOGGER = LoggerFactory.getLogger(MateriaRest.class);
@@ -39,11 +38,11 @@ public class MateriaRest {
     }
 
     @GetMapping("/")
-    public List<MateriaDTO> findAll() {
+    public List<Materia> findAll() {
 
         LOGGER.info("Recebendo find all");
 
-        return this.materiaService.findAllDTO();
+        return this.materiaService.findAll();
     }
 
     @PutMapping("/{id}")

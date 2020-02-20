@@ -21,7 +21,6 @@ class Aluno {
     public Aluno() {
     }
 
-
     public Long getId() {
         return id;
     }

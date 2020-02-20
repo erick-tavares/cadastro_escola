@@ -12,6 +12,9 @@ public class MateriaDTO {
         this.nome = nome;
     }
 
+    public MateriaDTO() {
+    }
+
     public static MateriaDTO of(Materia materia) {
         return new MateriaDTO(
                 materia.getId(),

@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/periodos")
 public class PeriodoRest {
     private static final Logger LOGGER = LoggerFactory.getLogger(PeriodoRest.class);
@@ -33,8 +33,14 @@ public class PeriodoRest {
     public PeriodoDTO find(@PathVariable("id") Long id) {
 
         LOGGER.info("Recebendo find by ID... id: [{}]", id);
-
         return this.periodoService.findById(id);
+    }
+
+    @GetMapping("/")
+    public List<PeriodoDTO> findAll() {
+
+        LOGGER.info("Recebendo find all");
+        return this.periodoService.findAll();
     }
 
     @PutMapping("/{id}")

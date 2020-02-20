@@ -55,16 +55,6 @@ public class MateriaService {
         return this.iMateriaRepository.findAll();
     }
 
-    public List<MateriaDTO> findAllDTO (){
-        List<Materia> materias = iMateriaRepository.findAll();
-        List<MateriaDTO>materiaDto = new ArrayList<>();
-        for (Materia materia : materias){
-            materiaDto.add(MateriaDTO.of(materia));
-        }
-        return materiaDto;
-    }
-
-
     public MateriaDTO findById(Long id) {
         Optional<Materia> materiaOptional = this.iMateriaRepository.findById(id);
 

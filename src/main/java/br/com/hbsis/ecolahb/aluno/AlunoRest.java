@@ -9,7 +9,6 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/alunos")
 public class AlunoRest {
     private static final Logger LOGGER = LoggerFactory.getLogger(AlunoRest.class);
@@ -39,10 +38,9 @@ public class AlunoRest {
     }
 
     @GetMapping("/")
-    public List<AlunoDTO> findAll() {
+    public List<Aluno> findAll() {
 
         LOGGER.info("Recebendo find all");
-
         return this.alunoService.findAll();
     }
 

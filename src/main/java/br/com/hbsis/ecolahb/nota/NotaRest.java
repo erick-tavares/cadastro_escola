@@ -9,7 +9,6 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/notas")
 public class NotaRest {
     private static final Logger LOGGER = LoggerFactory.getLogger(NotaRest.class);
@@ -36,6 +35,14 @@ public class NotaRest {
 
         return this.notaService.findById(id);
     }
+
+//    @GetMapping("/")
+//    public List<Nota> findAll() {
+//
+//        LOGGER.info("Recebendo find all");
+//
+//        return this.notaService.findAll();
+//    }
 
     @GetMapping("/")
     public List<NotaDTO> findAll() {
