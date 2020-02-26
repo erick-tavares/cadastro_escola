@@ -44,14 +44,6 @@ public class AlunoRest {
         return this.alunoService.findAll();
     }
 
-    @GetMapping("/cadastro/{id}")
-    public Aluno findAluno(@PathVariable("id") Long id) {
-
-        LOGGER.info("Recebendo find by ID... id: [{}]", id);
-
-        return this.alunoService.findByAlunoId(id);
-    }
-
     @PutMapping("/{id}")
     public AlunoDTO udpate(@PathVariable("id") Long id, @RequestBody AlunoDTO alunoDTO) {
         LOGGER.info("Recebendo Update para aluno de ID: {}", id);

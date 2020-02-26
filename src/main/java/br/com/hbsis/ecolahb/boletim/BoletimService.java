@@ -86,10 +86,6 @@ public class BoletimService {
         throw new IllegalArgumentException(String.format("Boletim %s não está cadastrada", id));
     }
 
-//    public List<Boletim> findAll(){
-//        return iBoletimRepository.findAll();
-//    }
-
     public List<BoletimDTO> findAll() {
         List<Boletim> boletimList = iBoletimRepository.findAll();
         List<BoletimDTO> boletimDTOList = new ArrayList<>();
@@ -105,7 +101,6 @@ public class BoletimService {
 
         return boletimList;
     }
-
 
     public List<BoletimDTO> boletimDoAluno(Long id) {
         Aluno alunoExistente = alunoService.findByAlunoId(id);

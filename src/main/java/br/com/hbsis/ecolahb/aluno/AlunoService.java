@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,18 +54,12 @@ public class AlunoService {
         if (StringUtils.isEmpty(alunoDTO.getTelefone())) {
             throw new IllegalArgumentException("Telefone não deve ser nulo");
         }
-    }
 
-    public Aluno findByNome(String nome) {
-        Optional<Aluno> alunoOptional = this.iAlunoRepository.findByNome(nome);
-
-        if (alunoOptional.isPresent()) {
-            return alunoOptional.get();
+        if (alunoDTO.getTelefone().replaceAll("[\\d]", "").length() > 11 || alunoDTO.getTelefone().replaceAll("[\\d]", "").length() < 10) {
+            throw new IllegalArgumentException("Telefone inválido, digite um telefone no formato -(99)9999-9999- ");
         }
-        throw new IllegalArgumentException(String.format("Aluno %s não está cadastrado", nome));
+
     }
-
-
 
     public AlunoDTO findById(Long id) {
         Optional<Aluno> alunoOptional = this.iAlunoRepository.findById(id);

@@ -1,14 +1,11 @@
 package br.com.hbsis.ecolahb.materia;
 
 
-import br.com.hbsis.ecolahb.aluno.Aluno;
-import br.com.hbsis.ecolahb.aluno.AlunoDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
