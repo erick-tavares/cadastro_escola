@@ -2,7 +2,6 @@ package br.com.hbsis.ecolahb.periodo;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.time.LocalDate;
 
 public class PeriodoDTO {
@@ -10,9 +9,9 @@ public class PeriodoDTO {
     private Long id;
 
  // @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    @JsonFormat(pattern = "dd/MM/yyyy")
+//    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dtInicio;
- @JsonFormat(pattern = "dd/MM/yyyy")
+// @JsonFormat(pattern = "dd/MM/yyyy")
  //  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate dtFim;
     private String descricao;

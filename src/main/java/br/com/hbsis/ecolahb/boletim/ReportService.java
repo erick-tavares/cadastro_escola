@@ -75,8 +75,6 @@ public class ReportService {
     }
 
 
-
-
     public String exportReport (Long boletim, String reportFormat ) throws FileNotFoundException, JRException {
             String path = "C:\\Users\\erick.tavares\\Desktop\\Report";
             List<BoletimModel> boletimList = this.preencherBoletim(boletim);

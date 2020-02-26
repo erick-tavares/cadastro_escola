@@ -46,25 +46,36 @@ public class PeriodoService {
     private void validate(PeriodoDTO periodoDTO) {
         LOGGER.info("Validando Periodo");
 
-        if (periodoDTO == null) {
-            throw new IllegalArgumentException("PeriodoDTO não deve ser nulo");
-        }
+        if (periodoDTO == null) throw new IllegalArgumentException("PeriodoDTO não deve ser nulo");
 
-        if (StringUtils.isEmpty(periodoDTO.getDtInicio())) {
-            throw new IllegalArgumentException("DtInicio não deve ser nula");
-        }
+        if (StringUtils.isEmpty(periodoDTO.getDtInicio())) throw new IllegalArgumentException("DtInicio não deve ser nula");
 
-        if (StringUtils.isEmpty(periodoDTO.getDtFim())) {
-            throw new IllegalArgumentException("DtFim não deve ser nula");
+        if (StringUtils.isEmpty(periodoDTO.getDtFim())) throw new IllegalArgumentException("DtFim não deve ser nula");
+
+        if (StringUtils.isEmpty(periodoDTO.getDescricao())) throw new IllegalArgumentException("Descricao não deve ser nula");
+
+        if ((periodoDTO.getDtFim().isBefore(periodoDTO.getDtInicio())) | periodoDTO.getDtFim().isEqual(periodoDTO.getDtInicio())) {
+            throw new IllegalArgumentException("A data do fim do período é invalida");
         }
-        if (StringUtils.isEmpty(periodoDTO.getDescricao())) {
-            throw new IllegalArgumentException("Descricao não deve ser nula");
+        List<Periodo> periodoList = this.iPeriodoRepository.findAll();
+        for (Periodo periodo : periodoList) {
+            if ((periodoDTO.getDtInicio().isBefore(periodo.getDtFim())) && periodoDTO.getDtFim().isAfter(periodo.getDtFim()) ||
+            periodoDTO.getDtInicio().isEqual(periodo.getDtFim())){
+                throw new IllegalArgumentException("A data de início de período já existe entre outro período");
+            }
+            if ((periodoDTO.getDtInicio().isBefore(periodo.getDtInicio())) && periodoDTO.getDtFim().isAfter(periodo.getDtInicio()) ||
+                    periodoDTO.getDtFim().isEqual(periodo.getDtInicio())){
+                throw new IllegalArgumentException("A data de fim de período já existe entre outro período");
+            }
+            if ((periodoDTO.getDtInicio().isBefore(periodo.getDtInicio())) && periodoDTO.getDtFim().isAfter(periodo.getDtFim())){
+                throw new IllegalArgumentException("A data de período já existe entre outro período");
+            }
+            if ((periodoDTO.getDtInicio().isEqual(periodo.getDtInicio())) && periodoDTO.getDtFim().isEqual(periodo.getDtFim())){
+                throw new IllegalArgumentException("O período já existe");
+            }
         }
     }
 
-//    public List<Periodo> findAll() {
-//        return iPeriodoRepository.findAll();
-//    }
 
     public List<PeriodoDTO> findAll(){
         List<Periodo> periodoList = iPeriodoRepository.findAll();
