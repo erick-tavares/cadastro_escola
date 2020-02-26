@@ -38,6 +38,11 @@ public class PeriodoService {
         return PeriodoDTO.of(periodo);
     }
 
+//    public String DateTimeFormatter (LocalDate periodo){
+//        String dataFormatada =  (periodo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+//        return dataFormatada;
+//    }
+
     private void validate(PeriodoDTO periodoDTO) {
         LOGGER.info("Validando Periodo");
 

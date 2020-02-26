@@ -119,18 +119,16 @@ public class BoletimService {
 
     public List<Nota> preencherNotas(List<NotaDTO> notaDtoEntrada) {
         List<Nota> notaList = new ArrayList<>();
-        if (notaDtoEntrada != null) {
+
             if (notaDtoEntrada != null) {
                 for (NotaDTO notaDto : notaDtoEntrada) {
                     Nota notaNova = new Nota();
-
                     notaNova.setNota(notaDto.getNota());
                     notaNova.setMateriaId(materiaService.findByMateriaId(notaDto.getMateriaId()));
                     notaNova.setAlunoId(alunoService.findByAlunoId(notaDto.getAlunoId()));
 
                     notaList.add(notaNova);
                 }
-            }
         }
         return notaList;
     }

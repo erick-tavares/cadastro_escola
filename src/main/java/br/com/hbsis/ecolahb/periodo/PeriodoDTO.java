@@ -9,11 +9,11 @@ public class PeriodoDTO {
 
     private Long id;
 
-   // @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-   // @JsonFormat(pattern = "dd/MM/yyyy")
+ // @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dtInicio;
-  //  @JsonFormat(pattern = "dd/MM/yyyy")
-  //  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+ @JsonFormat(pattern = "dd/MM/yyyy")
+ //  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate dtFim;
     private String descricao;
 
