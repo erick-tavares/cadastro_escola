@@ -5,8 +5,7 @@ simula um sistema de cadastros administrativos para escolas, e gera um arquivo J
 
 -Ferramentas utilizadas-
 
-IntelliJ IDEA
-
+<li>IntelliJ IDEA</li>
 Banco de dados SQL Server
 
 Spring Boot 2.2
