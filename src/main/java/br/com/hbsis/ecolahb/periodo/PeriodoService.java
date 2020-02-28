@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +27,7 @@ public class PeriodoService {
         LOGGER.info("Salvando periodo");
         LOGGER.debug("Periodo: {}", periodoDTO);
 
+
         Periodo periodo = new Periodo();
         periodo.setDtInicio(periodoDTO.getDtInicio());
         periodo.setDtFim(periodoDTO.getDtFim());
@@ -37,11 +37,6 @@ public class PeriodoService {
 
         return PeriodoDTO.of(periodo);
     }
-
-//    public String DateTimeFormatter (LocalDate periodo){
-//        String dataFormatada =  (periodo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-//        return dataFormatada;
-//    }
 
     private void validate(PeriodoDTO periodoDTO) {
         LOGGER.info("Validando Periodo");
@@ -73,9 +68,11 @@ public class PeriodoService {
             if ((periodoDTO.getDtInicio().isEqual(periodo.getDtInicio())) && periodoDTO.getDtFim().isEqual(periodo.getDtFim())){
                 throw new IllegalArgumentException("O período já existe");
             }
+            if (periodoDTO.getDescricao().equalsIgnoreCase(periodo.getDescricao())){
+                throw new IllegalArgumentException("A descrição do periodo já existe");
+            }
         }
     }
-
 
     public List<PeriodoDTO> findAll(){
         List<Periodo> periodoList = iPeriodoRepository.findAll();

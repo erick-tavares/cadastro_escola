@@ -4,6 +4,10 @@ import net.sf.jasperreports.engine.JRException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,12 +21,13 @@ public class BoletimRest {
 
     private final BoletimService boletimService;
 
+    private final ReportService reportService;
+
     @Autowired
-    public BoletimRest(BoletimService boletimService) {
+    public BoletimRest(BoletimService boletimService, ReportService reportService) {
         this.boletimService = boletimService;
+        this.reportService = reportService;
     }
-    @Autowired
-    public ReportService reportService;
 
     @PostMapping
     public BoletimDTO save(@Valid @RequestBody BoletimDTO boletimDTO) {
@@ -48,9 +53,16 @@ public class BoletimRest {
         return this.boletimService.findAll();
     }
 
-    @GetMapping("/report/{boletim}/{format}")
-    public String generateReport(@PathVariable ("boletim") Long boletim, @PathVariable("format") String format) throws FileNotFoundException, JRException {
-        return reportService.exportReport(boletim, format);
+//    @GetMapping("/report/{boletim}/{format}")
+//    public String generateReport(@PathVariable ("boletim") Long boletim, @PathVariable("format") String format) throws FileNotFoundException, JRException {
+//        return reportService.exportReport(boletim, format);
+//    }
+
+    @GetMapping("/report/{boletim}")
+    public ResponseEntity<byte[]> generateReport(@PathVariable("boletim") Long boletim) throws FileNotFoundException, JRException {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_PDF);
+        return new ResponseEntity<>(reportService.exportReport(boletim), httpHeaders, HttpStatus.OK);
     }
 
     @GetMapping("/aluno/{alunoId}")

@@ -32,7 +32,6 @@ public class AlunoService {
         aluno.setTelefone(alunoDTO.getTelefone());
 
         aluno = this.iAlunoRepository.save(aluno);
-
         return AlunoDTO.of(aluno);
     }
 
@@ -55,10 +54,9 @@ public class AlunoService {
             throw new IllegalArgumentException("Telefone não deve ser nulo");
         }
 
-        if (alunoDTO.getTelefone().replaceAll("[\\d]", "").length() > 11 || alunoDTO.getTelefone().replaceAll("[\\d]", "").length() < 10) {
+        if (alunoDTO.getTelefone().length() < 13) {
             throw new IllegalArgumentException("Telefone inválido, digite um telefone no formato -(99)9999-9999- ");
         }
-
     }
 
     public AlunoDTO findById(Long id) {
@@ -71,11 +69,11 @@ public class AlunoService {
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
 
-    public List<Aluno> findAll (){
+    public List<Aluno> findAll() {
         return iAlunoRepository.findAll();
     }
 
-    public Aluno findByAlunoId (Long id){
+    public Aluno findByAlunoId(Long id) {
         Optional<Aluno> alunoOptional = this.iAlunoRepository.findById(id);
         if (alunoOptional.isPresent()) {
             return alunoOptional.get();

@@ -12,4 +12,5 @@ public interface INotaRepository extends JpaRepository<Nota, Long> {
 
     List<Nota> findAllByAlunoId_Id(Long alunoId);
 
+    List<Nota> findAllByBoletimId_IdAndMateriaId_Id(Long boletimId, Long materiaId);
 }

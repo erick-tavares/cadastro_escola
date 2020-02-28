@@ -75,8 +75,7 @@ public class ReportService {
     }
 
 
-    public String exportReport (Long boletim, String reportFormat ) throws FileNotFoundException, JRException {
-            String path = "C:\\Users\\erick.tavares\\Desktop\\Report";
+    public  byte[] exportReport(Long boletim) throws FileNotFoundException, JRException {
             List<BoletimModel> boletimList = this.preencherBoletim(boletim);
 
             File file = ResourceUtils.getFile("classpath:boletim.jrxml");
@@ -85,14 +84,7 @@ public class ReportService {
             Map<String, Object> map = new HashMap<>();
             map.put("createdBy", "Escola HB");
 
-
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, dataSource);
-            if (reportFormat.equalsIgnoreCase("html")) {
-                JasperExportManager.exportReportToHtmlFile(jasperPrint, path + "\\boletim.html");
-            }
-            if (reportFormat.equalsIgnoreCase("pdf")) {
-                JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\boletim.pdf");
-            }
-            return "Report gerado no caminho" + path;
+            return JasperExportManager.exportReportToPdf(jasperPrint);
         }
     }

@@ -4,7 +4,6 @@ package br.com.hbsis.ecolahb.nota;
 import br.com.hbsis.ecolahb.aluno.AlunoService;
 import br.com.hbsis.ecolahb.boletim.BoletimService;
 import br.com.hbsis.ecolahb.materia.MateriaService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -44,6 +43,7 @@ public class NotaService {
         nota.setAlunoId(alunoService.findByAlunoId(notaDTO.getAlunoId()));
         nota.setBoletimId(boletimService.findByBoletimId(notaDTO.getBoletimId()));
 
+        validarListaNota(notaDTO);
         nota = this.iNotaRepository.save(nota);
 
         return NotaDTO.of(nota);
@@ -60,6 +60,10 @@ public class NotaService {
             throw new IllegalArgumentException("Nota não deve ser nula");
         }
 
+        if (notaDTO.getNota() > 10 || notaDTO.getNota() < 0) {
+            throw new IllegalArgumentException("A nota deve ser de 0 a 10");
+        }
+
         if (StringUtils.isEmpty(notaDTO.getMateriaId())) {
             throw new IllegalArgumentException("MateriaId não deve ser nulo");
         }
@@ -73,6 +77,12 @@ public class NotaService {
         }
     }
 
+    public void validarListaNota(NotaDTO notaDTO) {
+        List<Nota> notaDoBoletim = this.findAllByBoletimId_IdAndMateriaId_Id(notaDTO.getBoletimId(), notaDTO.getMateriaId());
+        if (notaDoBoletim.size() > 3) {
+            throw new IllegalArgumentException("O aluno só pode ter no máximo 4 notas por matéria para cada boletim");
+        }
+    }
 
     public NotaDTO findById(Long id) {
         Optional<Nota> notaOptional = this.iNotaRepository.findById(id);
@@ -84,19 +94,14 @@ public class NotaService {
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
 
-//    public List<Nota> findAll() {
-//        return iNotaRepository.findAll();
-//    }
-    public List<NotaDTO> findAll(){
+    public List<NotaDTO> findAll() {
         List<Nota> notaList = iNotaRepository.findAll();
         List<NotaDTO> notaDTOList = new ArrayList<>();
-        for (Nota nota : notaList){
+        for (Nota nota : notaList) {
             notaDTOList.add(NotaDTO.of(nota));
-
         }
         return notaDTOList;
     }
-
 
     public List<NotaDTO> findAllByAlunoId_Id(Long alunoId) {
         List<Nota> notas = iNotaRepository.findAllByAlunoId_Id(alunoId);
@@ -108,11 +113,12 @@ public class NotaService {
     }
 
     public List<Nota> findAllByAlunoId_IdAndPeriodoId_Id(Long alunoId, Long periodoId) {
-
         return this.iNotaRepository.findAllByBoletimId_AlunoId_IdAndBoletimId_PeriodoId_Id(alunoId, periodoId);
-
     }
 
+    public List<Nota> findAllByBoletimId_IdAndMateriaId_Id(Long boletimId, Long materiaId) {
+        return this.iNotaRepository.findAllByBoletimId_IdAndMateriaId_Id(boletimId, materiaId);
+    }
 
     public NotaDTO update(NotaDTO notaDTO, Long id) {
         Optional<Nota> notaExistenteOptional = this.iNotaRepository.findById(id);
@@ -133,13 +139,11 @@ public class NotaService {
 
             return NotaDTO.of(notaExistente);
         }
-
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
 
     public void delete(Long id) {
         LOGGER.info("Executando delete para nota de ID: [{}]", id);
-
         this.iNotaRepository.deleteById(id);
     }
 }

@@ -28,10 +28,8 @@ public class AlunoRest {
         return this.alunoService.save(alunoDTO);
     }
 
-
     @GetMapping("/{id}")
     public AlunoDTO find(@PathVariable("id") Long id) {
-
         LOGGER.info("Recebendo find by ID... id: [{}]", id);
 
         return this.alunoService.findById(id);

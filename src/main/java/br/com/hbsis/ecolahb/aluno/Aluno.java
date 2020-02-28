@@ -1,6 +1,5 @@
 package br.com.hbsis.ecolahb.aluno;
 
-
 import javax.persistence.*;
 
 @Entity

@@ -6,6 +6,7 @@ import br.com.hbsis.ecolahb.aluno.AlunoService;
 import br.com.hbsis.ecolahb.materia.MateriaService;
 import br.com.hbsis.ecolahb.nota.Nota;
 import br.com.hbsis.ecolahb.nota.NotaDTO;
+import br.com.hbsis.ecolahb.periodo.Periodo;
 import br.com.hbsis.ecolahb.periodo.PeriodoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +47,8 @@ public class BoletimService {
         boletim.setPeriodoId(periodoService.findByPeriodoId(boletimDTO.getPeriodoId()));
         boletim.setNotaList(preencherNotas(boletimDTO.getNotaDTOList()));
 
+        this.validarPeriodoDoBoletim(boletim.getAlunoId(), boletim.getPeriodoId());
+
         boletim = this.iBoletimRepository.save(boletim);
 
         return BoletimDTO.of(boletim);
@@ -65,8 +68,16 @@ public class BoletimService {
         if (StringUtils.isEmpty(boletimDTO.getPeriodoId())) {
             throw new IllegalArgumentException("PeriodoId não deve ser nulo");
         }
+
     }
 
+    public void validarPeriodoDoBoletim(Aluno aluno, Periodo periodo) {
+        List<Boletim> boletimList = this.findByAluno(aluno);
+        for (Boletim boletim : boletimList){
+            if (boletim.getPeriodoId().getDescricao().equalsIgnoreCase(periodo.getDescricao()))
+                throw new IllegalArgumentException("Este aluno já contem um boletim com essa descrição");
+        }
+    }
 
     public BoletimDTO findById(Long id) {
         Optional<Boletim> boletimOptional = this.iBoletimRepository.findById(id);
@@ -115,15 +126,15 @@ public class BoletimService {
     public List<Nota> preencherNotas(List<NotaDTO> notaDtoEntrada) {
         List<Nota> notaList = new ArrayList<>();
 
-            if (notaDtoEntrada != null) {
-                for (NotaDTO notaDto : notaDtoEntrada) {
-                    Nota notaNova = new Nota();
-                    notaNova.setNota(notaDto.getNota());
-                    notaNova.setMateriaId(materiaService.findByMateriaId(notaDto.getMateriaId()));
-                    notaNova.setAlunoId(alunoService.findByAlunoId(notaDto.getAlunoId()));
+        if (notaDtoEntrada != null) {
+            for (NotaDTO notaDto : notaDtoEntrada) {
+                Nota notaNova = new Nota();
+                notaNova.setNota(notaDto.getNota());
+                notaNova.setMateriaId(materiaService.findByMateriaId(notaDto.getMateriaId()));
+                notaNova.setAlunoId(alunoService.findByAlunoId(notaDto.getAlunoId()));
 
-                    notaList.add(notaNova);
-                }
+                notaList.add(notaNova);
+            }
         }
         return notaList;
     }

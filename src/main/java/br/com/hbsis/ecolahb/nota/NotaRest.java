@@ -36,14 +36,6 @@ public class NotaRest {
         return this.notaService.findById(id);
     }
 
-//    @GetMapping("/")
-//    public List<Nota> findAll() {
-//
-//        LOGGER.info("Recebendo find all");
-//
-//        return this.notaService.findAll();
-//    }
-
     @GetMapping("/")
     public List<NotaDTO> findAll() {
 
